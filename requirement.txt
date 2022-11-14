@@ -1,0 +1,11 @@
+pygis
+geemap
+streamlit
+gdal
+onnxruntime
+opencv-python
+numpy
+tqdm
+zipfile
+multiprocessing
+scikit-image
