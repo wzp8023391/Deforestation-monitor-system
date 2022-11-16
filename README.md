@@ -1,19 +1,37 @@
 ## OpenForestMonitor: An Advanced Open-source Deforestation Monitoring System
 
+
 ### 1. Demo
 A web-based deforestation system can be linked here: http://183.66.154.42:8501 (the maximum  upload image size is 4GB.)
 Attention: this system was deployed in Chongqing, China, so as to access to this website, you need to enable VPN to access! 
 
-#### 1.1 source code
-Our paper is under review, after our paper is accepted, we will open source all codes. If you are interested in our work, please contact us with wang749195@outlook.com.
+#### 1.1 package Installation
+In order to run OpenForestMonitor system, you should install these third-party packages:
+```python
+pygis
+geemap
+streamlit
+gdal
+onnxruntime
+opencv-python
+numpy
+tqdm
+zipfile
+multiprocessing
+scikit-image
+AItool
+```
+- if you have nvidia GPUs, you can install onnxruntime-gpu to accelerate computing
+- if you install AItool package failed, you can download the source code from PyPi with .gz or .tar format(see https://test.pypi.org/project/AItool/). Another way is copy AItool and egg_info into your python site-package file.
 
 ### 2. Performance
 For a 91976×74237 pixels image, our server computer with AMD 3900x and 32gb memory can be finished in half a hour.
 
-### 3. Installation
-you should use pip tool to install packages. all package can be seen in requirement.txt
-
-recommendation：use Anaconda software to manage third-party packages.
+### 3. run
+you can run OpenForestMonitor in your server, just use one command line:
+```python 
+streamlit run deforestation_Monitor.py  --server.maxUploadSize 4000
+```
 
 ### 4. Citation
 @article{wang2022OpenForestMonitor,
@@ -24,7 +42,5 @@ recommendation：use Anaconda software to manage third-party packages.
 }
 
 
-a simple way to run the source code, only one line code is needed!
-```python 
-streamlit run deforestation_Monitor.py  --server.maxUploadSize 4000
-```
+### environment
+This system was developed on windows 10, python3.8.3. Other systems like ubuntu or macos is also supportive.
