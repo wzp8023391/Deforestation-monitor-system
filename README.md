@@ -24,6 +24,9 @@ AItool
 ```
 - if you have nvidia GPUs, you can install onnxruntime-gpu to accelerate computing
 - if you install AItool package failed, you can download the source code from PyPi with .gz or .tar format(see https://test.pypi.org/project/AItool/). Another way is copy AItool and egg_info into your python site-package file.
+  
+#### 1.2 deep learning model download
+the deforestation model is over 150MB, you can download it from https://drive.google.com/drive/folders/1etsHlRJgT712Oq2HyQ321cFrd_ZkjacU?usp=share_link
 
 ### 2. Performance
 For a 91976×74237 pixels image, our server computer with AMD 3900x and 32gb memory can be finished in half a hour.
