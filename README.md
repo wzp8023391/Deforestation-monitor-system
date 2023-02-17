@@ -3,7 +3,7 @@
 
 ### 1. Demo
 A web-based deforestation system can be linked here: http://183.66.154.42:8501 (the maximum  upload image size is 4GB.)
-Attention: this system was deployed in Chongqing, China, so as to access to this website, you need to enable VPN to access! 
+Attention: if you are in China, you need to install a VPN tool to access this website! 
 
 #### 1.1 package Installation
 - Environment: Python3.8
@@ -38,13 +38,13 @@ streamlit run deforestation_Monitor.py  --server.maxUploadSize 4000
 ```
 
 ### 4. Citation
-@article{wang2022OpenForestMonitor,
-  title={{OpenForestMonitor}: An Advanced Open-source Deforestation Monitoring System},
-  author={Zhipan Wang, Di Liu, Weihua Pu, Xiang Liao, Qingling Zhang},
+@ article{wang2022OpenForestMonitor,
+  title={OpenForestMonitor: An Advanced Open-source Deforestation Monitoring System},
+  author={Zhipan Wang and Qingling Zhang},
   journal={},
   year={2022}
 }
 
 
 ### environment
-This system was developed on windows 10, python3.8.3. Other systems like ubuntu or macos is also supportive.
+This system was developed on windows 10, python3.8.3.
