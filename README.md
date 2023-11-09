@@ -20,10 +20,10 @@ tqdm
 zipfile
 multiprocessing
 scikit-image
-AItool(if you use the AItool.py file, you don't need to install this library.)
+AItool(if you use the AItool.py file, you don't need to install this library. AItool.py is in Tool file.)
 ```
 - if you have Nvidia GPUs, you can install onnxruntime-gpu to accelerate computing
-- If you install AItool package fails, you can download the source code from PyPi in .gz or .tar format(see https://test.pypi.org/project/AItool/). Another way is to copy AItool and egg_info into your Python site-package file. (Another way is to use AItool.py in the Tool file)
+- If you install AItool package fails, you can download the source code from PyPi in .gz or .tar format(see https://test.pypi.org/project/AItool/). Another way is to copy AItool and egg_info into your Python site-package file.
   
 #### 1.2 Deep learning model download
 the deforestation model is over 150MB, you can download it from https://drive.google.com/drive/folders/1etsHlRJgT712Oq2HyQ321cFrd_ZkjacU?usp=share_link
