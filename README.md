@@ -23,7 +23,7 @@ scikit-image
 AItool
 ```
 - if you have Nvidia GPUs, you can install onnxruntime-gpu to accelerate computing
-- If you want to install the AItool package fails, you can download the source code from PyPi in .gz or .tar format(see https://test.pypi.org/project/AItool/).
+- If the AItool package install failed, you can download the source code from PyPi in .gz or .tar format(see https://test.pypi.org/project/AItool/).
   
 #### 1.2 Deep learning model download
 The deforestation model is over 150MB, you can download it from https://drive.google.com/drive/folders/1etsHlRJgT712Oq2HyQ321cFrd_ZkjacU?usp=share_link
