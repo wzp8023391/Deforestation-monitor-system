@@ -6,7 +6,7 @@ A web-based deforestation system can be linked here: http://183.66.154.42:8501 (
 Attention: if you are in China, you need to install a VPN tool to access this website! 
 
 #### 1.1 Package Installation
-- Environment: Python3.8
+- Environment: Python3.8, 3.9, 3.10
 - In order to run the OpenForestMonitor system, you should install these third-party packages:
 ```python
 pygis
