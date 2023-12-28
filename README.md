@@ -20,13 +20,13 @@ tqdm
 zipfile
 multiprocessing
 scikit-image
-AItool(if you use the AItool.py file, you don't need to install this library. AItool.py is in Tool file.)
+AItool
 ```
 - if you have Nvidia GPUs, you can install onnxruntime-gpu to accelerate computing
-- If you install AItool package fails, you can download the source code from PyPi in .gz or .tar format(see https://test.pypi.org/project/AItool/). Another way is to copy AItool and egg_info into your Python site-package file.
+- If you want to install the AItool package fails, you can download the source code from PyPi in .gz or .tar format(see https://test.pypi.org/project/AItool/).
   
 #### 1.2 Deep learning model download
-the deforestation model is over 150MB, you can download it from https://drive.google.com/drive/folders/1etsHlRJgT712Oq2HyQ321cFrd_ZkjacU?usp=share_link
+The deforestation model is over 150MB, you can download it from https://drive.google.com/drive/folders/1etsHlRJgT712Oq2HyQ321cFrd_ZkjacU?usp=share_link
 or from BaiduDisk：https://pan.baidu.com/s/1hrYSyF81WdeVxo4_7SM86A?pwd=0k6k 
 passkey：0k6k 
 
@@ -34,7 +34,7 @@ passkey：0k6k
 For a 91976×74237 pixels image, our server computer with AMD 3900x and 32 GB memory can be finished in half an hour.
 
 ### 3. run
-you can run OpenForestMonitor in your server, just use one command line:
+you can run OpenForestMonitor on your server, just use one command line:
 ```python 
 streamlit run deforestation_Monitor.py  --server.maxUploadSize 4000
 ```
