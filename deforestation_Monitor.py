@@ -1,7 +1,7 @@
 # coding:utf-8
 import os
 import streamlit as st
-from AItool.AItool import onnx_main as AI_monitor
+from AItool import onnx_main as AI_monitor
 from pathlib import Path
 import leafmap.foliumap as leafmap
 
