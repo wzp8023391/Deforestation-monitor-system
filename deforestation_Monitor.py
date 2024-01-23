@@ -64,10 +64,16 @@ def app():
     
     st.sidebar.markdown("## Please set the blocksize to detect changes")
     block_size = st.sidebar.slider("blocksize", 512, 4096, 2048, 512)
+    
+    
+    # model selection
+    st.sidebar.title("Model select")
+    model_type = st.sidebar.selectbox("please select a model to detect deforestation",
+        ["SiamHRnet-OCR", "Unet++", "SNUnet", "DeepLabV3+", "SegFormer", "SegNext","Unet"])
 
     
     # server-side: online deforestation detection
-    if st.sidebar.button("online extraction"):
+    if st.sidebar.button("online detection"):
         
         m3 = leafmap.Map()
 
@@ -82,7 +88,24 @@ def app():
         isUseVote       = 0                                    # use vote or not
          
         if object_type == "Forest":  # forest monitor
-            onnx_model_Path = "RS_change_detection_model/Forest_CD_model.onnx"
+            
+            if model_type == "SiamHRnet-OCR":
+                onnx_model_Path = "RS_change_detection_model/SiamHRnet-OCR.onnx"
+            elif model_type == "Unet":
+                onnx_model_Path = "RS_change_detection_model/Unet.onnx"
+            elif model_type == "Unet++":
+                onnx_model_Path = "RS_change_detection_model/Unet++.onnx"
+            elif model_type == "SNUnet":
+                onnx_model_Path = "RS_change_detection_model/SNUnet.onnx"
+            elif model_type == "DeepLabV3+":
+                onnx_model_Path = "RS_change_detection_model/DeepLabV3+.onnx"
+            elif model_type == "SegFormer": 
+                onnx_model_Path = "RS_change_detection_model/SegFormer.onnx"
+            elif model_type == "SegNext":
+                onnx_model_Path = "RS_change_detection_model/SegNext.onnx"
+            else:
+                onnx_model_Path = "RS_change_detection_model/SiamHRnet-OCR.onnx"
+                
             
             T1 = time.time()
             AI_monitor(inputChannel=6, pro=pro, onnx_modelPath=onnx_model_Path, blocksize=block_size, T1_Path=T1_image_path,
