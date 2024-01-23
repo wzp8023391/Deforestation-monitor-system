@@ -40,7 +40,7 @@ streamlit run deforestation_Monitor.py  --server.maxUploadSize 4000
 ```
 
 ### 4. Citation
-@ article{wang2022OpenForestMonitor,
+@article{wang2022OpenForestMonitor,
   title={OpenForestMonitor: An Advanced Open-source Deforestation Monitoring System},
   author={Zhipan Wang},
   journal={2023},
@@ -49,4 +49,4 @@ streamlit run deforestation_Monitor.py  --server.maxUploadSize 4000
 
 
 ### environment
-This system was developed on windows 10, python3.8.3.
+This system was developed on Windows 10, python3.8.3.
