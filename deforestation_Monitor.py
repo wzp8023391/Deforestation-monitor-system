@@ -4,7 +4,8 @@ import streamlit as st
 from AItool import onnx_main as AI_monitor
 from pathlib import Path
 import leafmap.foliumap as leafmap
-
+# import leafmap.leafmap as leafmap
+from osgeo import gdal
 from Tool.compressResult import compress_attaches
 from pathlib import Path
 
@@ -14,7 +15,26 @@ import time
 st.set_page_config(layout="wide")  # wide layer
 
 
+def getXYcenter(rasterPath):
+    """
+    get center of input raster
+    """
+    dataset = gdal.Open(rasterPath)
+
+    width = dataset.RasterXSize
+    height = dataset.RasterYSize
+
+    transform = dataset.GetGeoTransform()
+
+    center_x = transform[0] + (width * transform[1] + height * transform[2]) / 2
+    center_y = transform[3] + (width * transform[4] + height * transform[5]) / 2
+    
+    return center_x, center_y
+    
+
+
 def app():
+    layerHeight = 500   # UI height of a layer
      
     savePath_File = "tempFile"
     if not os.path.exists(savePath_File):
@@ -27,34 +47,48 @@ def app():
     object_type = st.sidebar.selectbox("please select what you are interested in",
         ["Forest"])
     
-    uploaded_file_T1 = st.sidebar.file_uploader("please upload the former time-phase RS image", type=["tif", "tiff", "png", "jpeg"])
-    uploaded_file_T2 = st.sidebar.file_uploader("please upload the latter time-phase RS image", type=["tif", "tiff", "png", "jpeg"])
+    # img type selection
+    st.sidebar.title("Image type")
+    img_type = st.sidebar.selectbox("please select an image type to detect deforestation",
+        ["High_resolution", "Landsat", "Sentinel2A/2B"])
+    
+    uploaded_file_T1 = st.sidebar.file_uploader("please upload the former time-phase RS image", type=["tif", "tiff", "png", "jpeg", "img"])
+    uploaded_file_T2 = st.sidebar.file_uploader("please upload the latter time-phase RS image", type=["tif", "tiff", "png", "jpeg", "img"])
     
     
     if uploaded_file_T1 is not None:
-        m = leafmap.Map()
+        
         
         T1_image_path = os.path.join(savePath_File, uploaded_file_T1.name)
         fp = Path(T1_image_path)
         fp.write_bytes(uploaded_file_T1.getvalue())  # save as image file
         
+        center_x, center_y = getXYcenter(T1_image_path)
+        
+        m = leafmap.Map(center=(center_x, center_y), zoom = 8)
+        
             
         with col1:
             m.add_local_tile(T1_image_path, layer_name = "T1_image_layer")
+            
+            
 
-            m.to_streamlit(height=1000, minimap_control=True)
+            m.to_streamlit(height=layerHeight, minimap_control=True)
         
     if uploaded_file_T2 is not None:
-        m2 = leafmap.Map()
         
         T2_image_path = os.path.join(savePath_File, uploaded_file_T2.name)
         fp = Path(T2_image_path)
         fp.write_bytes(uploaded_file_T2.getvalue())  
         
+        center_x, center_y = getXYcenter(T2_image_path)
+        
+        m2 = leafmap.Map(center=(center_x, center_y), zoom = 8)
+        
         with col2:
             m2.add_local_tile(T2_image_path, layer_name = "T2_image_layer")
 
-            m2.to_streamlit(height=1000, minimap_control=True)
+            m2.to_streamlit(height=layerHeight, minimap_control=True)
         
 
     
@@ -75,51 +109,81 @@ def app():
     # server-side: online deforestation detection
     if st.sidebar.button("online detection"):
         
-        m3 = leafmap.Map()
+        # m3 = leafmap.Map()
 
         print("begin...")
         
-        imgName         = os.path.splitext(T1_image_path)[0]   # get image file name
+        imgName         = os.path.splitext(T1_image_path)[0]               # get image file name
         
         saveimgPath     = imgName+"_Deforestaion_Monitor_result.tif" 
         saveshpPath     = imgName+"_Deforestaion_Monitor_result.shp" 
         
         pro             = confidence_threshold
-        isUseVote       = 0                                    # use vote or not
+        isUseVote       = 0                                                # use vote or not
          
-        if object_type == "Forest":  # forest monitor
+        if (object_type == "Forest") and (img_type == "High_resolution"):  # forest monitor using high-resolution images
             
             if model_type == "SiamHRnet-OCR":
                 onnx_model_Path = "RS_change_detection_model/SiamHRnet-OCR.onnx"
-            elif model_type == "Unet":
+            elif model_type == "Unet" :
                 onnx_model_Path = "RS_change_detection_model/Unet.onnx"
-            elif model_type == "Unet++":
+            elif model_type == "Unet++" :
                 onnx_model_Path = "RS_change_detection_model/Unet++.onnx"
-            elif model_type == "SNUnet":
+            elif model_type == "SNUnet" :
                 onnx_model_Path = "RS_change_detection_model/SNUnet.onnx"
-            elif model_type == "DeepLabV3+":
+            elif model_type == "DeepLabV3+" :
                 onnx_model_Path = "RS_change_detection_model/DeepLabV3+.onnx"
-            elif model_type == "SegFormer": 
+            elif model_type == "SegFormer" : 
                 onnx_model_Path = "RS_change_detection_model/SegFormer.onnx"
-            elif model_type == "SegNext":
+            elif model_type == "SegNext" :
                 onnx_model_Path = "RS_change_detection_model/SegNext.onnx"
             else:
                 onnx_model_Path = "RS_change_detection_model/SiamHRnet-OCR.onnx"
+        
+        elif (object_type == "Forest") and (img_type == "Landsat"):        # forest monitor using Landsat images
+            print("Deforestation detection on Landsat image...")
+            onnx_model_Path = "RS_change_detection_model/SiamHRnet-OCR_Landsat.onnx"
+            
+        elif (object_type == "Forest") and (img_type == "Sentinel2A/2B"):  # forest monitor using Sentinel2A/B images
+            print("Deforestation detection on Sentinel2A/B image...")
+            onnx_model_Path = "RS_change_detection_model/SiamHRnet-OCR_Sentinel2AB.onnx"
+            
+        else:
+            st.markdown("- please select an image type and deep learning model to run deforestation detection...")
                 
             
-            T1 = time.time()
+        T1 = time.time()
+        
+        if (object_type == "Forest") and (img_type == "High_resolution"):
             AI_monitor(inputChannel=6, pro=pro, onnx_modelPath=onnx_model_Path, blocksize=block_size, T1_Path=T1_image_path,
-                                  T2_Path=T2_image_path, saveRasterpath=saveimgPath, isCheckProject=1, saveReProjectPath="D://imgT2_reProject.tif",
-                                  isSaveVector=1, saveSHPpath=saveshpPath, area=20, isUseVote=isUseVote, isHollFill=0, GPUid=0)        
-            T2 = time.time()
-            st.markdown("- Computing time: "+str(T2-T1)+"s")
+                                    T2_Path=T2_image_path, saveRasterpath=saveimgPath, isCheckProject=1, saveReProjectPath="D://imgT2_reProject.tif",
+                                    isSaveVector=1, saveSHPpath=saveshpPath, area=20, isUseVote=isUseVote, isHollFill=0, GPUid=0)   
+            
+        elif (object_type == "Forest") and (img_type == "Landsat"):
+            AI_monitor(inputChannel=12, pro=pro, onnx_modelPath=onnx_model_Path, blocksize=block_size, T1_Path=T1_image_path,
+                                    T2_Path=T2_image_path, saveRasterpath=saveimgPath, isCheckProject=1, saveReProjectPath="D://imgT2_reProject.tif",
+                                    isSaveVector=1, saveSHPpath=saveshpPath, area=20, isUseVote=isUseVote, isHollFill=0, GPUid=0)
+            
+        elif (object_type == "Forest") and (img_type == "Sentinel2A/2B"):
+            AI_monitor(inputChannel=14, pro=pro, onnx_modelPath=onnx_model_Path, blocksize=block_size, T1_Path=T1_image_path,
+                                    T2_Path=T2_image_path, saveRasterpath=saveimgPath, isCheckProject=1, saveReProjectPath="D://imgT2_reProject.tif",
+                                    isSaveVector=1, saveSHPpath=saveshpPath, area=20, isUseVote=isUseVote, isHollFill=0, GPUid=0)
+               
+        T2 = time.time()
+        
+        st.markdown("- Computing time: "+str(T2-T1)+"s")
         
         st.markdown("- finished...")
         
         with col3:
-            m3.add_local_tile(saveimgPath, layer_name = "detection layer")
+            center_x, center_y = getXYcenter(saveimgPath)
+        
+            m3 = leafmap.Map(center=(center_x, center_y), zoom = 8)
+        
+            # m3.add_local_tile(saveimgPath, layer_name = "Deforestation map")  # 加载栅格
+            m3.add_shp(saveshpPath, layer_name = "Deforestation map")
 
-            m3.to_streamlit(height=1000, minimap_control=True)
+            m3.to_streamlit(height=layerHeight, minimap_control=True)
         
         
         try:
