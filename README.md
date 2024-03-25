@@ -27,8 +27,8 @@ AItool
   
 #### 1.2 Deep learning model download
 The deforestation model is over 150MB, you can download it from https://drive.google.com/drive/folders/1etsHlRJgT712Oq2HyQ321cFrd_ZkjacU?usp=share_link
-or from BaiduDisk：https://pan.baidu.com/s/1hrYSyF81WdeVxo4_7SM86A?pwd=0k6k 
-passkey：0k6k 
+or from BaiduDisk：https://pan.baidu.com/s/1zBD_YMFIWlTiJ5u8v5-quA?pwd=i5b6 
+passkey：i5b6 
 
 ### 2. Performance
 For a 91976×74237 pixels image, our server computer with AMD 3900x and 32 GB memory can be finished in half an hour.
