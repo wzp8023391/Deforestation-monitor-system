@@ -1,15 +1,18 @@
 # coding:utf-8
 import os
 import streamlit as st
-from AItool import onnx_main as AI_monitor
+
 from pathlib import Path
 import leafmap.foliumap as leafmap
 # import leafmap.leafmap as leafmap
 from osgeo import gdal
 from Tool.compressResult import compress_attaches
 from pathlib import Path
+import requests
+import json
 
 import time 
+import datetime
 
 
 st.set_page_config(layout="wide")  # wide layer
@@ -36,7 +39,11 @@ def getXYcenter(rasterPath):
 def app():
     layerHeight = 500   # UI height of a layer
      
-    savePath_File = "tempFile"
+    currentFolder = os.path.abspath(os.curdir)
+    savePathfile = "tempFile"
+    
+    savePath_File = os.path.join(currentFolder, savePathfile)
+    
     if not os.path.exists(savePath_File):
         os.makedirs(savePath_File)  
         
@@ -113,13 +120,13 @@ def app():
 
         print("begin...")
         
-        imgName         = os.path.splitext(T1_image_path)[0]               # get image file name
+        imgName         = os.path.splitext(T1_image_path)[0]               
         
         saveimgPath     = imgName+"_Deforestaion_Monitor_result.tif" 
         saveshpPath     = imgName+"_Deforestaion_Monitor_result.shp" 
         
         pro             = confidence_threshold
-        isUseVote       = 0                                                # use vote or not
+        isUseVote       = 0                                                
          
         if (object_type == "Forest") and (img_type == "High_resolution"):  # forest monitor using high-resolution images
             
@@ -154,20 +161,92 @@ def app():
             
         T1 = time.time()
         
+        currentTime = datetime.datetime.now()
+        taskID = int(currentTime.strftime("%Y%m%d%H%M%S"))
+        
+        url = "http://127.0.0.1:5000/openForestMonitor/task/"
+        
+        
         if (object_type == "Forest") and (img_type == "High_resolution"):
-            AI_monitor(inputChannel=6, pro=pro, onnx_modelPath=onnx_model_Path, blocksize=block_size, T1_Path=T1_image_path,
-                                    T2_Path=T2_image_path, saveRasterpath=saveimgPath, isCheckProject=1, saveReProjectPath="D://imgT2_reProject.tif",
-                                    isSaveVector=1, saveSHPpath=saveshpPath, area=20, isUseVote=isUseVote, isHollFill=0, GPUid=0)   
+            postData = {'inputChannel': str(6),
+                    'pro': str(pro),
+                    'blockSize': str(block_size),
+                    'onnx_modelPath': str(onnx_model_Path),
+                    'T1_Path': str(T1_image_path),
+                    'T2_Path': str(T2_image_path),
+                    'saveRasterpath': str(saveimgPath),
+                    'saveSHPpath': str(saveshpPath),
+                    'isCheckProject': str(1),
+                    'saveReProjectPath': "D://imgT2_reProject.tif",
+                    'isSaveVector': str(1),
+                    'area': str(200),
+                    'isUseVote': str(0),
+                    'isHollFill': str(0),
+                    'GPUid': str(0),
+                    'taskID': str(taskID),
+                   }
+            
+
+            json_data = json.dumps(postData)
+            headers = {'Content-Type': 'application/json'}
+
+            response = requests.post(url, data=json_data, headers=headers)
             
         elif (object_type == "Forest") and (img_type == "Landsat"):
-            AI_monitor(inputChannel=12, pro=pro, onnx_modelPath=onnx_model_Path, blocksize=block_size, T1_Path=T1_image_path,
-                                    T2_Path=T2_image_path, saveRasterpath=saveimgPath, isCheckProject=1, saveReProjectPath="D://imgT2_reProject.tif",
-                                    isSaveVector=1, saveSHPpath=saveshpPath, area=20, isUseVote=isUseVote, isHollFill=0, GPUid=0)
+            postData = {'inputChannel': str(12),
+                    'pro': str(pro),
+                    'blockSize': str(block_size),
+                    'onnx_modelPath': str(onnx_model_Path),
+                    'T1_Path': str(T1_image_path),
+                    'T2_Path': str(T2_image_path),
+                    'saveRasterpath': str(saveimgPath),
+                    'saveSHPpath': str(saveshpPath),
+                    'isCheckProject': str(1),
+                    'saveReProjectPath': "D://imgT2_reProject.tif",
+                    'isSaveVector': str(1),
+                    'area': str(200),
+                    'isUseVote': str(0),
+                    'isHollFill': str(0),
+                    'GPUid': str(0),
+                    'taskID': str(taskID),
+                   }
+            
+            json_data = json.dumps(postData).encode('utf-8')
+            headers = {'Content-Type': 'application/json'}
+
+            response = requests.post(url, data=json_data, headers=headers)
             
         elif (object_type == "Forest") and (img_type == "Sentinel2A/2B"):
-            AI_monitor(inputChannel=14, pro=pro, onnx_modelPath=onnx_model_Path, blocksize=block_size, T1_Path=T1_image_path,
-                                    T2_Path=T2_image_path, saveRasterpath=saveimgPath, isCheckProject=1, saveReProjectPath="D://imgT2_reProject.tif",
-                                    isSaveVector=1, saveSHPpath=saveshpPath, area=20, isUseVote=isUseVote, isHollFill=0, GPUid=0)
+            postData = {'inputChannel': str(14),
+                    'pro': str(pro),
+                    'blockSize': str(block_size),
+                    'onnx_modelPath': str(onnx_model_Path),
+                    'T1_Path': str(T1_image_path),
+                    'T2_Path': str(T2_image_path),
+                    'saveRasterpath': str(saveimgPath),
+                    'saveSHPpath': str(saveshpPath),
+                    'isCheckProject': str(1),
+                    'saveReProjectPath': "D://imgT2_reProject.tif",
+                    'isSaveVector': str(1),
+                    'area': str(200),
+                    'isUseVote': str(0),
+                    'isHollFill': str(0),
+                    'GPUid': str(0),
+                    'taskID': str(taskID),
+                   }
+            
+            json_data = json.dumps(postData)
+            headers = {'Content-Type': 'application/json'}
+
+            response = requests.post(url, data=json_data, headers=headers)
+            
+        response = response.json()
+        
+        if response['code'] == 200:
+            print("task running success...")
+        elif response['code'] == 1001:
+            print("catch errors on the server side")
+            
                
         T2 = time.time()
         
@@ -180,8 +259,8 @@ def app():
         
             m3 = leafmap.Map(center=(center_x, center_y), zoom = 8)
         
-            # m3.add_local_tile(saveimgPath, layer_name = "Deforestation map")  # 加载栅格
-            m3.add_shp(saveshpPath, layer_name = "Deforestation map")
+            m3.add_local_tile(saveimgPath, layer_name = "Deforestation map")  # 加载栅格
+            # m3.add_shp(saveshpPath, layer_name = "Deforestation map")
 
             m3.to_streamlit(height=layerHeight, minimap_control=True)
         
