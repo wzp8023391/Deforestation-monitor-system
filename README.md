@@ -42,7 +42,7 @@ python main_server.py
 then, enjoy OpenForestMonitor system!
 
 ### 4. Citation
-@article{title={OpenForestMonitor: An Advanced Open-source Deforestation Monitoring System},
+@article{title={A Web-based Prototype System for Deforestation Detection on High-resolution Remote Sensing Imagery with Deep Learning},
   author={Zhipan Wang},
   journal={2023},
   year={2023}
