@@ -31,6 +31,7 @@ pip install AItool_fast-0.1-cp310-cp310-win_amd64.whl (the AItool_fast surpporte
 
 #### 1.2 Deep learning model download
 The deforestation model is over 150MB, you can download it from https://drive.google.com/drive/folders/1etsHlRJgT712Oq2HyQ321cFrd_ZkjacU?usp=share_link
+or you can download it from https://pan.baidu.com/s/1XQ2tK-U1Zu7bJPzETZV4fw , the passkey is 1234.
 
 And then, copy these models into \Server_Side\RS_change_detection_model.
 
